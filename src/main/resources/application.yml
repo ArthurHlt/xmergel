@@ -1,0 +1,6 @@
+spring:
+  application.name: Xmergel
+  output.ansi.enabled: NEVER
+logging:
+  level:
+   root: WARN

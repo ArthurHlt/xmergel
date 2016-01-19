@@ -1,0 +1,7 @@
+<Root xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform"
+      xsi:noNamespaceSchemaLocation="WatsonDialogDocument_1.0.xsd">
+    <Logging>
+        <Logger name="myFith" level="WARN" xdt:Transform="Insert"/>
+    </Logging>
+</Root>

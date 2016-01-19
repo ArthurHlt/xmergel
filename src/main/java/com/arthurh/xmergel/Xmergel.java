@@ -1,15 +1,22 @@
 package com.arthurh.xmergel;
 
-import org.atteo.xmlcombiner.XmlCombiner;
+import be.hikage.xdt4j.XdtTransformer;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.xml.sax.SAXException;
 
 import javax.xml.transform.TransformerException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 /**
  * Copyright (C) 2016 Arthur Halet
@@ -24,8 +31,13 @@ import java.nio.file.Paths;
 @Component
 public class Xmergel {
     @Autowired
-    @Qualifier("xmlCombiner")
-    private XmlCombiner xmlCombiner;
+    @Qualifier("xdtTransformer")
+    private XdtTransformer xdtTransformer;
+
+    @Autowired
+    @Qualifier("saxReader")
+    private SAXReader saxReader;
+
 
     private Path resultFile;
 
@@ -33,19 +45,34 @@ public class Xmergel {
     }
 
 
-    public void combine(Path... files) throws IOException, SAXException, TransformerException {
+    public void combine(List<Path> files) throws IOException, SAXException, TransformerException, DocumentException {
+        Document finalDocument = this.saxReader.read(files.get(0).toFile());
         for (Path file : files) {
-            this.xmlCombiner.combine(file);
+            finalDocument = this.xdtTransformer.transform(finalDocument, this.saxReader.read(file.toFile()));
         }
-        this.xmlCombiner.buildDocument(this.resultFile);
+        OutputFormat format = OutputFormat.createPrettyPrint();
+        XMLWriter xmlWriter = new XMLWriter(
+                new FileWriter(this.resultFile.toFile()),
+                format
+        );
+        xmlWriter.write(finalDocument);
+        xmlWriter.close();
     }
 
-    public XmlCombiner getXmlCombiner() {
-        return xmlCombiner;
+    public XdtTransformer getXdtTransformer() {
+        return xdtTransformer;
     }
 
-    public void setXmlCombiner(XmlCombiner xmlCombiner) {
-        this.xmlCombiner = xmlCombiner;
+    public void setXdtTransformer(XdtTransformer xdtTransformer) {
+        this.xdtTransformer = xdtTransformer;
+    }
+
+    public SAXReader getSaxReader() {
+        return saxReader;
+    }
+
+    public void setSaxReader(SAXReader saxReader) {
+        this.saxReader = saxReader;
     }
 
     public Path getResultFile() {

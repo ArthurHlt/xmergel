@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 
 import java.io.*;
 import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,7 +115,7 @@ public class XmergelCommandLine implements CommandLineRunner {
         System.out.println("Merging files...");
         try {
             this.xmergel.setResultFile(output);
-            this.xmergel.combine(filesToCombine.toArray(new Path[filesToCombine.size()]));
+            this.xmergel.combine(filesToCombine);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
             if (this.isDebug) {

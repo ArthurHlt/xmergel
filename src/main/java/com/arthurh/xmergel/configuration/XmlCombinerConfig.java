@@ -1,11 +1,9 @@
 package com.arthurh.xmergel.configuration;
 
-import com.arthurh.xmergel.Xmergel;
-import org.atteo.xmlcombiner.XmlCombiner;
+import be.hikage.xdt4j.XdtTransformer;
+import org.dom4j.io.SAXReader;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * Copyright (C) 2016 Arthur Halet
@@ -21,7 +19,13 @@ import javax.xml.parsers.ParserConfigurationException;
 public class XmlCombinerConfig {
 
     @Bean
-    public XmlCombiner xmlCombiner() throws ParserConfigurationException {
-        return new XmlCombiner();
+    public XdtTransformer xdtTransformer() {
+        return new XdtTransformer();
     }
+
+    @Bean
+    public SAXReader saxReader() {
+        return new SAXReader();
+    }
+
 }

@@ -1,2 +1,5 @@
 /.mvn
 /target
+/source.xml
+/transformer.xml
+/target.xml
